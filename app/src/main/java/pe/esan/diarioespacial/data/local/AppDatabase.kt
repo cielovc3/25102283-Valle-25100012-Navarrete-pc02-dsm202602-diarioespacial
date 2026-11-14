@@ -7,13 +7,14 @@ import androidx.room.RoomDatabase
 
 // Base común. Acuerdo: el Alumno 2 agrega AsteroidEntity, version = 2 y asteroidDao()
 @Database(
-    entities = [ApodEntity::class],
-    version = 1,
+    entities = [ApodEntity::class, AsteroidEntity::class],
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun apodDao(): ApodDao
+    abstract fun asteroidDao(): AsteroidDao
 
     companion object {
         @Volatile
