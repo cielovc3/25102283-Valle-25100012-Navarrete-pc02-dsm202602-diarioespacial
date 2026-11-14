@@ -18,11 +18,12 @@ import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import pe.esan.diarioespacial.presentation.apod.ApodViewModel
 import pe.esan.diarioespacial.presentation.apod.imagenesGraph
+import pe.esan.diarioespacial.presentation.asteroid.AsteroidViewModel
+import pe.esan.diarioespacial.presentation.asteroid.asteroidesGraph
 
 @Composable
 fun AppNavGraph() {
@@ -32,9 +33,10 @@ fun AppNavGraph() {
 
     // Un ViewModel por opción, compartido por sus pantallas internas
     val apodViewModel: ApodViewModel = viewModel()
+    val asteroidViewModel: AsteroidViewModel = viewModel()
 
     Scaffold(
-        contentWindowInsets = WindowInsets(0, 0, 0, 0),   // cada pantalla maneja su barra superior
+        contentWindowInsets = WindowInsets(0, 0, 0, 0),
         bottomBar = {
             NavigationBar {
                 NavigationBarItem(
@@ -57,13 +59,12 @@ fun AppNavGraph() {
             startDestination = Routes.IMAGENES,
             modifier = Modifier.padding(innerPadding)
         ) {
-            imagenesGraph(navController, apodViewModel)        // Alumno 1
-            composable(Routes.ASTEROIDES) { Text("Asteroides (pendiente)") }   // se reemplaza al integrar
+            imagenesGraph(navController, apodViewModel)          // Alumno 1
+            asteroidesGraph(navController, asteroidViewModel)    // Alumno 2
         }
     }
 }
 
-// Cambia de opción sin apilar pantallas y recordando dónde estabas
 private fun navigateToTab(navController: NavHostController, route: String) {
     navController.navigate(route) {
         popUpTo(navController.graph.findStartDestination().id) { saveState = true }
