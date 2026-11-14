@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -20,12 +21,17 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import pe.esan.diarioespacial.presentation.apod.ApodViewModel
+import pe.esan.diarioespacial.presentation.apod.imagenesGraph
 
 @Composable
 fun AppNavGraph() {
     val navController = rememberNavController()
     val backStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = backStackEntry?.destination
+
+    // Un ViewModel por opción, compartido por sus pantallas internas
+    val apodViewModel: ApodViewModel = viewModel()
 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),   // cada pantalla maneja su barra superior
@@ -51,9 +57,8 @@ fun AppNavGraph() {
             startDestination = Routes.IMAGENES,
             modifier = Modifier.padding(innerPadding)
         ) {
-            // Temporales: se reemplazan por imagenesGraph(...) y asteroidesGraph(...)
-            composable(Routes.IMAGENES) { Text("Imágenes (pendiente)") }
-            composable(Routes.ASTEROIDES) { Text("Asteroides (pendiente)") }
+            imagenesGraph(navController, apodViewModel)        // Alumno 1
+            composable(Routes.ASTEROIDES) { Text("Asteroides (pendiente)") }   // se reemplaza al integrar
         }
     }
 }
